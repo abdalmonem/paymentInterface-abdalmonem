@@ -32,13 +32,14 @@ body {
     display: flex;
     flex-direction: column;
 }
-.selectSection:hover{
-    opacity: 0.5;
-}
+
 .selectSection .interface{
     width: 100%;
     display: flex;
     flex-direction: row;
+}
+.selectSection .interface:hover{
+    opacity: 0.5;
 }
 .selectSection .interface span{
     flex: 1;
