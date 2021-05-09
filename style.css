@@ -3,6 +3,7 @@ body {
     flex-direction: column;
     direction: rtl;
     background: rgba(255, 192, 0, 0.001);
+    font-family: 'Almarai';
 }
 
 .currentPaymentType{
