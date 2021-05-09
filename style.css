@@ -1,0 +1,192 @@
+body {
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    background: rgba(255, 192, 0, 0.001);
+}
+
+.currentPaymentType{
+    padding: 20px 5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 15px;
+}
+.currentPaymentType p{
+    flex: 1;
+}
+
+.currentPaymentType span{
+    color: rgba(255, 192, 0, 1);
+    font-weight: bold;
+}
+
+.selectSection{
+    width: 80%;
+    padding: 15px 5%;
+    margin: 10px 5%;
+    background: #fff;
+    box-shadow: 0px 0 15px 0 rgba(78, 59, 1, 0.05);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+.selectSection:hover{
+    opacity: 0.5;
+}
+.selectSection .interface{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.selectSection .interface span{
+    flex: 1;
+    color: #555;
+}
+.selectSection .interface img{
+    width: 20px;
+    height: 20px;
+}
+
+.selectSection .theBody{
+    display: flex;
+    flex-direction: column;
+    margin: 22px 0 0 0;
+}
+
+.selectSection .theBody .cell{
+    padding: 10px 10px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+.selectSection .theBody .cell .selectRadio{
+    width:20px;
+    height: 20px;
+    border-radius: 100%;
+    background: #eee;
+    padding: 2px;
+}
+
+.selectSection .theBody .cell .selectRadio .check{
+    width:100%;
+    height: 100%;
+    border-radius: 100px;
+    background: rgba(255, 192, 0, 1);
+}
+.selectSection .theBody .cell .icon{
+    height:20px;
+}
+.selectSection .theBody .cell p{
+    font-size: 14px;
+    color: #000;
+    flex: 1;
+}
+
+.payForm{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.payForm section{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.payForm section .inputAndHandler{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 40%;
+}
+
+.payForm .inputAndHandler input{
+    border: 1px solid #ccc;
+    border-radius: 100px;
+    padding: 10px 20px;
+    outline: none;
+    height: 20px;
+}
+
+.inputError{
+    background: rgba(250, 2, 115, 0.1);
+}
+
+.payForm .inputAndHandler .errorHandlerBox{
+    padding: 10px 10px;
+    font-size: 13px;
+    color: red;
+}
+
+.totalAndPayOutButtonSection{
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    box-shadow: 0 0 20px 0  rgba(0, 0, 0, 0.1);
+    padding: 10px 5%;
+    width: 90%;
+}
+
+.totalAndPayOutButtonSection .total{
+    display: flex;
+    flex-direction: column;
+}
+.totalAndPayOutButtonSection .lable{
+    font-size: 13px;
+    color: #888;
+}
+.totalAndPayOutButtonSection .price{
+    font-size: 14px;
+    color: #222;
+    margin-top: 3px;
+}
+
+.mainButton{
+    padding: 7px 20px;
+    background: rgba(255, 192, 0, 1);
+    color: #fff;
+    border-radius: 100px;
+    border: 0;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.mainButton:hover{
+    opacity: 0.5;
+}
+.mainButton:active{
+    opacity: 0.5;
+}
+
+.billInfoRow{
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #eee;
+}
+
+.billInfoRow .itemTitle{
+    flex: 1;
+    font-size: 16px;
+    color: #777;
+}
+.billInfoRow .itemPrice{
+    font-size: 16px;
+    font-weight: bold;
+}
+.billInfoRow .itemTotalTitle{
+    flex: 1;
+    font-size: 18px;
+    color: #222;
+}
+.billInfoRow .itemTotalPrice{
+    font-size: 18px;
+    font-weight: bold;
+}

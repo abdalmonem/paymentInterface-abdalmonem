@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="jq.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+
+    <body>
+
+        <div style="width: 50px;height: 50px;"></div>
+
+
+        <div class="selectSection">
+            <div class="interface">
+                <span>مجمل التكاليف</span>
+                <img src="assets/downRow.png" />
+            </div>
+
+            <div class="theBody">
+                <div class="billInfoRow">
+                    <span class="itemTitle"> عنوان العنصر </span>
+                    <div style="width: 10px;height: 10px;"></div>
+                    <span class="itemPrice"> 44 ر.س </span>
+                </div>
+                <div class="billInfoRow">
+                    <span class="itemTitle"> عنوان العنصر </span>
+                    <div style="width: 10px;height: 10px;"></div>
+                    <span class="itemPrice"> 44 ر.س </span>
+                </div>
+                <div class="billInfoRow" style="border: 0;">
+                    <span class="itemTotalTitle"> المجموع </span>
+                    <div style="width: 10px;height: 10px;"></div>
+                    <span class="itemTotalPrice"> 88 ر.س </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="width: 20px;height: 20px;"></div>
+
+        <!--
+        <div class="currentPaymentType">
+           <p>
+               <b>الدفع عن طريق : </b>
+               بطاقة الإئتمان
+           </p>
+            <span>تغيير</span>
+        </div>
+        -->
+
+        <div class="selectSection">
+            <div class="interface">
+                <span>البطاقات المحفوظة مسبقًا</span>
+                <img src="assets/downRow.png" />
+            </div>
+
+            <div class="theBody" id="savedCards">
+
+                <div class="cell" data-id="13">
+                    <img src="assets/visa.png" class="icon"/>
+                    <div style="width: 10px;height: 10px;"></div>
+                    <p>4506 - 5643 - *****</p>
+                    <div style="width: 10px;height: 10px;"></div>
+                    <div class="selectRadio"><div class="check"></div></div>
+                </div>
+                <div class="cell" data-id="15">
+                    <img src="assets/visa.png" class="icon"/>
+                    <div style="width: 10px;height: 10px;"></div>
+                    <p>4506 - 5643 - *****</p>
+                    <div style="width: 10px;height: 10px;"></div>
+                    <div class="selectRadio"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="selectSection">
+            <div class="interface">
+                <span>الدفع من بطاقة جديدة</span>
+                <img src="assets/downRow.png" />
+            </div>
+
+            <div class="theBody" style="display: none;" id="addNewCardExpandList">
+
+                <Form class="payForm">
+                    <section>
+                        <div class="inputAndHandler">
+                            <input placeholder="رقم البطاقة" type="number" maxlength="16" name="number"/>
+                        </div>
+                    </section>
+                    <section>
+                        <div class="inputAndHandler">
+                            <input placeholder="تاريخ الإنتهاء" type="date" name="date"/>
+                        </div>
+                        <div style="width: 10px;height: 10px;"></div>
+                        <div class="inputAndHandler">
+                            <input placeholder="CVV" type="number" maxlength="3" name="cvv"/>
+                        </div>
+                    </section>
+                </Form>
+
+            </div>
+
+        </div>
+
+        <div style="width: 150px;height: 150px;"></div>
+
+        <div class="totalAndPayOutButtonSection">
+            <button class="mainButton" id="payOut">دفع</button>
+            <div style="flex: 1;"></div>
+            <div class="total">
+                <div class="lable">المجموع</div>
+                <div class="price">١١٤٥ ر.س</div>
+            </div>
+        </div>
+
+
+    <script>
+
+        var selectedOldPaymentId = null;
+
+        // select card event
+        $("#savedCards").find(".cell").click(function(){
+            $("#savedCards").find(".selectRadio").html("");
+            $(this).find(".selectRadio").html('<div class="check"></div>');
+            selectedOldPaymentId = $(this).attr("data-id");
+
+
+            $("#addNewCardExpandList").slideUp(); // fadeout (add new card) inputs fields
+            $("#addNewCardExpandList").find("input").html(""); // clean (add new card) text fields
+        });
+
+        // card interface display toggling
+        $(".selectSection").find(".interface").click(function(){
+            $(this).next(".theBody").slideToggle();
+        });
+
+        // payout button click event
+        $("#payOut").click(function(){
+            // do something
+            createAndResetInputErrorHandlers(
+                [{ 'name' : 'number' , 'errorMessage': 'رقم البطاقة غير صالح' }]
+            );
+        });
+
+        // this method responsible for handling errors that appears on inputs sections, you need to pass the options params as :
+        // options ex: [{ 'name' : 'cardNumber' , error: 'test error' }]
+        //                  ^ the name of input     ^ the error message
+        function createAndResetInputErrorHandlers(options) {
+            $("input").removeClass("inputError");
+            $("input").next(".errorHandlerBox").remove();
+
+            options.forEach(function (item) {
+                $("input[name=" + item["name"] + "]").addClass("inputError");
+                $("input[name=" + item["name"] + "]").parents(".inputAndHandler").append("<div class='errorHandlerBox'>" + item["errorMessage"] + "</div>");
+            });
+        }
+    </script>
+
+    </body>
+    </html>
