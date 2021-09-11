@@ -1,167 +1,356 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-        <script src="jq.js"></script>
-        <link rel="stylesheet" href="style.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href='https://fonts.googleapis.com/css?family=Almarai' rel='stylesheet'>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>دفع</title>
+    <!--<script src="/static/assets/jq.js"></script>-->
+    <!--<link rel="stylesheet" href="/static/assets/style.css">-->
+    <link rel="stylesheet" href="style.css">
+    <script src="jq.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href='https://fonts.googleapis.com/css?family=Almarai' rel='stylesheet'>
+    <style>
+        .custom-shape-divider-bottom-1622633481 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
 
-    <body>
+        .custom-shape-divider-bottom-1622633481 svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 137px;
+        }
 
-        <div style="width: 50px;height: 50px;"></div>
+        .custom-shape-divider-bottom-1622633481 .shape-fill {
+            fill: black;
+        }
 
+        /** For mobile devices **/
+        @media (max-width: 767px) {
+            .custom-shape-divider-bottom-1622633481 svg {
+                width: calc(137% + 1.3px);
+                height: 173px;
+            }
+        }
 
-        <div class="selectSection">
-            <div class="interface">
-                <span>مجمل التكاليف</span>
-                <img src="assets/downRow.png" />
-            </div>
+    </style>
+</head>
 
-            <div class="theBody">
-                <div class="billInfoRow">
-                    <span class="itemTitle"> عنوان العنصر </span>
-                    <div style="width: 10px;height: 10px;"></div>
-                    <span class="itemPrice"> 44 ر.س </span>
-                </div>
-                <div class="billInfoRow">
-                    <span class="itemTitle"> عنوان العنصر </span>
-                    <div style="width: 10px;height: 10px;"></div>
-                    <span class="itemPrice"> 44 ر.س </span>
-                </div>
-                <div class="billInfoRow" style="border: 0;">
-                    <span class="itemTotalTitle"> المجموع </span>
-                    <div style="width: 10px;height: 10px;"></div>
-                    <span class="itemTotalPrice"> 88 ر.س </span>
-                </div>
-            </div>
+<body>
 
-        </div>
-
-        <div style="width: 20px;height: 20px;"></div>
-
-        <!--
-        <div class="currentPaymentType">
-           <p>
-               <b>الدفع عن طريق : </b>
-               بطاقة الإئتمان
-           </p>
-            <span>تغيير</span>
-        </div>
-        -->
-
-        <div class="selectSection">
-            <div class="interface">
-                <span>البطاقات المحفوظة مسبقًا</span>
-                <img src="assets/downRow.png" />
-            </div>
-
-            <div class="theBody" id="savedCards">
-
-                <div class="cell" data-id="13">
-                    <img src="assets/visa.png" class="icon"/>
-                    <div style="width: 10px;height: 10px;"></div>
-                    <p>4506 - 5643 - *****</p>
-                    <div style="width: 10px;height: 10px;"></div>
-                    <div class="selectRadio"><div class="check"></div></div>
-                </div>
-                <div class="cell" data-id="15">
-                    <img src="assets/visa.png" class="icon"/>
-                    <div style="width: 10px;height: 10px;"></div>
-                    <p>4506 - 5643 - *****</p>
-                    <div style="width: 10px;height: 10px;"></div>
-                    <div class="selectRadio"></div>
-                </div>
-
-            </div>
-
-        </div>
+<div style="width: 50px;height: 50px;"></div>
 
 
-        <div class="selectSection">
-            <div class="interface">
-                <span>الدفع من بطاقة جديدة</span>
-                <img src="assets/downRow.png" />
-            </div>
-
-            <div class="theBody" style="display: none;" id="addNewCardExpandList">
-
-                <Form class="payForm">
-                    <section>
-                        <div class="inputAndHandler">
-                            <input placeholder="رقم البطاقة" type="number" maxlength="16" name="number"/>
-                        </div>
-                    </section>
-                    <section>
-                        <div class="inputAndHandler">
-                            <input placeholder="تاريخ الإنتهاء" type="date" name="date"/>
-                        </div>
-                        <div style="width: 10px;height: 10px;"></div>
-                        <div class="inputAndHandler">
-                            <input placeholder="CVV" type="number" maxlength="3" name="cvv"/>
-                        </div>
-                    </section>
-                </Form>
-
-            </div>
-
-        </div>
-
-        <div style="width: 150px;height: 150px;"></div>
-
-        <div class="totalAndPayOutButtonSection">
-            <button class="mainButton" id="payOut">دفع</button>
-            <div style="flex: 1;"></div>
-            <div class="total">
-                <div class="lable">المجموع</div>
-                <div class="price">١١٤٥ ر.س</div>
-            </div>
-        </div>
-
-
+<div class="selectSection">
+    <input type="hidden" id="user_id"/>
+    <input type="hidden" id="auth_key"/>
+    <input type="hidden" id="path" value="{{ path }}"/>
     <script>
+        function createElementFromHTML(htmlString) {
+            var div = document.createElement('div');
+            div.innerHTML = htmlString.trim();
 
-        var selectedOldPaymentId = null;
+            // Change this to div.childNodes to support multiple top-level nodes
+            return div.firstChild;
+        }
+
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+        $('#user_id').val(findGetParameter('user_id'));
+        $('#auth_key').val(findGetParameter('auth_key'));
+        var newURL = location.href.split("?")[0];
+        window.history.pushState('object', document.title, newURL);
+    </script>
+    <div class="interface">
+        <span>مجمل التكاليف</span>
+        <img src="/static/assets/downRow.png"/>
+    </div>
+
+    <div class="theBody">
+        <div class="billInfoRow">
+            <span class="itemTitle">المبلغ</span>
+            <div style="width: 10px;height: 10px;"></div>
+            <span class="itemPrice"> <span id="rent_cost">{{ rent_cost }}</span> ر.س </span>
+        </div>
+        <div class="billInfoRow">
+            <span class="itemTitle"> القيمة المضافة </span>
+            <div style="width: 10px;height: 10px;"></div>
+            <span class="itemPrice"> <span id="tax">{{ vat }}</span> ر.س </span>
+        </div>
+        <div class="billInfoRow" style="border: 0;">
+            <span class="itemTotalTitle"> المجموع </span>
+            <div style="width: 10px;height: 10px;"></div>
+            <span class="itemTotalPrice"> <span id="total">{{ p.amount }}</span> ر.س </span>
+        </div>
+    </div>
+
+</div>
+
+<div style="width: 20px;height: 20px;"></div>
+
+<!--
+<div class="currentPaymentType">
+   <p>
+       <b>الدفع عن طريق : </b>
+       بطاقة الإئتمان
+   </p>
+    <span>تغيير</span>
+</div>
+-->
+
+<div class="selectSection" id="cards_section" style="display: none;">
+    <div class="interface">
+        <span>البطاقات المحفوظة مسبقًا</span>
+        <img src="/static/assets/downRow.png"/>
+    </div>
+
+    <div class="theBody" id="savedCards">
+        {% for card in cards %}
+            <div class="cell" data-id="{{ card.id }}">
+                <img src="https://sandbox.payments.tap.company/images/{{ card.brand }}.svg" class="icon"/>
+                <div style="width: 10px;height: 10px;"></div>
+                <p>**********{{ card.first_six }}</p>
+                <div style="width: 10px;height: 10px;"></div>
+                <div class="selectRadio">
+
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% if cards %}
+    <script>
+        document.getElementById('cards_section').style.display = 'block';
+        {#let items = document.querySelectorAll(".cell");#}
+        {#let lastchild = items[items.length - 1];#}
+        {#lastchild.querySelector('.selectRadio')#}
+        {#lastchild.querySelector('.selectRadio').append(createElementFromHTML(`<div class="check"></div>`));#}
+    </script>
+{% endif %}
+
+<div class="selectSection">
+    <div class="interface" id="new_card">
+        <span>الدفع من بطاقة جديدة</span>
+        <img src="/static/assets/downRow.png"/>
+    </div>
+
+    <div class="theBody" style="display: none;" id="addNewCardExpandList">
+        <form id="form-container" method="post" action="/payment">
+            <!-- Tap element will be here -->
+            <div id="element-container"></div>
+            <div id="error-handler" role="alert"></div>
+            <div id="success" style=" display: none;;position: relative;float: left;">
+                Success! Your token is <span id="token"></span>
+            </div>
+            <!-- Tap pay button -->
+
+            <button id="tap-btn" class="mainButton" style="float: left;margin-top:20px ">دفع</button>
+            <div class="progressingPayment"></div>
+        </form>
+
+
+    </div>
+
+</div>
+
+<div style="width: 150px;height: 150px;"></div>
+
+<div class="totalAndPayOutButtonSection">
+    <div class="progressingPayment"></div>
+    <button class="mainButton" id="payOut" style="opacity: 0.5" >دفع</button>
+    <div style="flex: 1;"></div>
+    <div class="total">
+        <div class="lable">المجموع</div>
+        <div class="price"><span>{{ p.amount }}</span> ر.س</div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
+<script src="https://secure.gosell.io/js/sdk/tap.min.js"></script>
+<script>
+    var isProgressingPayment = false;
+    var selectedOldPaymentId = null;
+
+
+    var tap = Tapjsli('{{ TAP_PK }}');
+    var elements = tap.elements({});
+    var style = {
+        base: {
+            color: '#535353',
+            lineHeight: '18px',
+            fontFamily: 'sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: 'rgba(0, 0, 0, 0.26)',
+                fontSize: '15px'
+            }
+        },
+        invalid: {
+            color: 'red'
+        }
+    };
+    // input labels/placeholders
+    var labels = {
+        cardNumber: "رقم البطاقة",
+        expirationDate: "MM/YY",
+        cvv: "CVV",
+        cardHolder: "الاسم"
+    };
+    //payment options
+    var paymentOptions = {
+        currencyCode: ["SAR"],
+        labels: labels,
+        TextDirection: 'rtl'
+    }
+    //create element, pass style and payment options
+    var card = elements.create('card', {style: style}, paymentOptions);
+    //mount element
+    card.mount('#element-container');
+    //card change event listener
+    card.addEventListener('change', function (event) {
+        if (event.loaded) {
+            console.log("UI loaded :" + event.loaded);
+            console.log("current currency is :" + card.getCurrency())
+        }
+        var displayError = document.getElementById('error-handler');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+    var form = document.getElementById('form-container');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        tap.createToken(card).then(function (result) {
+            console.log(result);
+            if (result.error) {
+                // Inform the user if there was an error
+                var errorElement = document.getElementById('error-handler');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Send the token to your server
+                {#var errorElement = document.getElementById('success');#}
+                {#errorElement.style.display = "block";#}
+                {#var tokenElement = document.getElementById('token');#}
+                {#tokenElement.textContent = result.id;#}
+                {#tapTokenHandler(token)#}
+                pay(result);
+            }
+        });
+    });
+
+    function toggleLoadingProgressingPayment() {
+      isProgressingPayment = !isProgressingPayment;
+      if(isProgressingPayment) {
+        $(".mainButton").fadeOut();
+        $(".progressingPayment").fadeIn();
+      } else {
+        $(".mainButton").fadeIn();
+        $(".progressingPayment").fadeOut();
+      }
+    }
+
+    function pay(result) {
+        toggleLoadingProgressingPayment();
+        if (document.getElementById('auth_key').value !== "") {
+            prms = {};
+            if (result != null) {
+                prms['card'] = JSON.stringify(result.card);
+                prms['tok_id'] = result.id;
+            }
+
+            prms['user_id'] = document.getElementById('user_id').value;
+            prms['auth_key'] = document.getElementById('auth_key').value;
+            prms['path'] = document.getElementById('path').value;
+            prms['selected_card_id'] = selectedOldPaymentId
+
+
+            $.post(
+                '/payment/pay',
+                prms,
+                function (data) {
+                    console.log(data);
+                    toggleLoadingProgressingPayment();
+                    data = JSON.parse(data);
+                    if (data.status === true) {
+                        document.getElementById('savedCards').append(createElementFromHTML(`
+                                <div class="cell" data-id="${result.id}">
+                                    <img src="http://sandbox.payments.tap.company/images/${result.card.brand}.svg" class="icon"/>
+                                    <div style="width: 10px;height: 10px;"></div>
+                                    <p>**********${result.card.first_six}</p>
+                                    <div style="width: 10px;height: 10px;"></div>
+                            </div>`));
+                        $('#cards_section').show();
+                        card.clearForm();
+                    }
+                }
+            )
+        }
+
+    }
+
+    function tapTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'tapToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // Submit the form
+        form.submit();
+    }
+
 
         // select card event
-        $("#savedCards").find(".cell").click(function(){
+        $("#savedCards").find(".cell").click(function () {
             $("#savedCards").find(".selectRadio").html("");
             $(this).find(".selectRadio").html('<div class="check"></div>');
             selectedOldPaymentId = $(this).attr("data-id");
-
+            $("#payOut").css("opacity", "1");
+            document.getElementById("payOut").disabled = false;
 
             $("#addNewCardExpandList").slideUp(); // fadeout (add new card) inputs fields
             $("#addNewCardExpandList").find("input").html(""); // clean (add new card) text fields
         });
 
         // card interface display toggling
-        $(".selectSection").find(".interface").click(function(){
+        $(".selectSection").find(".interface").click(function () {
             $(this).next(".theBody").slideToggle();
         });
 
         // payout button click event
-        $("#payOut").click(function(){
-            // do something
-            createAndResetInputErrorHandlers(
-                [{ 'name' : 'number' , 'errorMessage': 'رقم البطاقة غير صالح' }]
-            );
+        $("#payOut").click(function() {
+          pay(null);
         });
 
         // this method responsible for handling errors that appears on inputs sections, you need to pass the options params as :
-        // options ex: [{ 'name' : 'cardNumber' , error: 'test error' }]
-        //                  ^ the name of input     ^ the error message
-        function createAndResetInputErrorHandlers(options) {
-            $("input").removeClass("inputError");
-            $("input").next(".errorHandlerBox").remove();
+        // options ex: [{ 'ar_name' : 'cardNumber' , error: 'test error' }]
+        //                  ^ the ar_name of input     ^ the error message
 
-            options.forEach(function (item) {
-                $("input[name=" + item["name"] + "]").addClass("inputError");
-                $("input[name=" + item["name"] + "]").parents(".inputAndHandler").append("<div class='errorHandlerBox'>" + item["errorMessage"] + "</div>");
-            });
-        }
     </script>
-
-    </body>
-    </html>
+</body>
+</html>

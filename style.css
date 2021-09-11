@@ -192,3 +192,12 @@ body {
     font-size: 18px;
     font-weight: bold;
 }
+
+.progressingPayment{
+  width: 25px;
+  height: 25px;
+  background-image: url("assets/loading.gif");
+  align-self: center;
+  background-size: 100%;
+  display: none;
+}
