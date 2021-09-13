@@ -201,3 +201,58 @@ body {
   background-size: 100%;
   display: none;
 }
+
+.billingPage{
+  width: available;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 15px;
+}
+
+.backButton{
+  place-self: start;
+  place-content: center;
+  place-items: center;
+  display: flex;
+  width: max-content;
+}
+
+.billingPage img{
+  width: 20px;
+}
+
+
+.billingPage .table{
+  border: 1px solid #555;
+  margin-top: 20px;
+  width: 96%;
+  padding: 20px 2%;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.billingPage .table .title{
+  font-size: 16px;
+  font-weight: bold;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.billingPage .table .cell{
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.billingPage .table .cell .key{
+  flex: 1;
+  color: #555;
+}
+
+
+.billingPage .table .cell .value{
+  flex: 2;
+  color: #222;
+}
